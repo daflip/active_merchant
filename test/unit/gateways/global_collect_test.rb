@@ -212,6 +212,15 @@ class GlobalCollectTest < Test::Unit::TestCase
     assert_equal 'Status: REJECTED', response.message
   end
 
+  def test_invalid_raw_response
+    response = stub_comms do
+      @gateway.purchase(@accepted_amount, @credit_card, @options)
+    end.respond_with(invalid_json_response)
+
+    assert_failure response
+    assert_match %r{^Invalid response received from the Global Collect API}, response.message
+  end
+
   def test_scrub
     assert @gateway.supports_scrubbing?
     assert_equal @gateway.scrub(pre_scrubbed), post_scrubbed
@@ -373,5 +382,18 @@ class GlobalCollectTest < Test::Unit::TestCase
 
   def failed_verify_response
     %({\n   \"errorId\" : \"cee09c50-5d9d-41b8-b740-8c7bf06d2c66\",\n   \"errors\" : [ {\n      \"code\" : \"430330\",\n      \"message\" : \"Not authorised\"\n   } ],\n   \"paymentResult\" : {\n      \"creationOutput\" : {\n         \"additionalReference\" : \"00000014280000000134\",\n         \"externalReference\" : \"000000142800000000920000100001\"\n      },\n      \"payment\" : {\n         \"id\" : \"000000142800000000920000100001\",\n         \"paymentOutput\" : {\n            \"amountOfMoney\" : {\n               \"amount\" : 100,\n               \"currencyCode\" : \"USD\"\n            },\n            \"references\" : {\n               \"paymentReference\" : \"0\"\n            },\n            \"paymentMethod\" : \"card\",\n            \"cardPaymentMethodSpecificOutput\" : {\n               \"paymentProductId\" : 1\n            }\n         },\n         \"status\" : \"REJECTED\",\n         \"statusOutput\" : {\n            \"errors\" : [ {\n               \"code\" : \"430330\",\n               \"requestId\" : \"64357\",\n               \"message\" : \"Not authorised\"\n            } ],\n            \"isCancellable\" : false,\n            \"statusCode\" : 100,\n            \"statusCodeChangeDateTime\" : \"20160318170253\",\n            \"isAuthorized\" : false\n         }\n      }\n   }\n})
+  end
+
+  def invalid_json_response
+    '<!DOCTYPE HTML PUBLIC "-//IETF//DTD HTML 2.0//EN"> 
+      <html><head> 
+        <title>502 Proxy Error</title> 
+      </head><body> 
+        <h1>Proxy Error</h1> 
+        <p>The proxy server received an invalid 
+            response from an upstream server.<br /> 
+            The proxy server could not handle the request <em><a href="/v1/9040/payments">POST&nbsp;/v1/9040/payments</a></em>.<p> 
+            Reason: <strong>Error reading from remote server</strong></p></p> 
+      </body></html>'
   end
 end
