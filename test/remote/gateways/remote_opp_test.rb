@@ -18,17 +18,17 @@ class RemoteOppTest < Test::Unit::TestCase
       merchant_transaction_id: "active_merchant_test_complete #{time}",
       address: address,
       description: 'Store Purchase - Books',
-        #      riskWorkflow: true,
-        #      testMode: 'EXTERNAL' # or 'INTERNAL', valid only for test system
+      # riskWorkflow: true,
+      # testMode: 'EXTERNAL' # or 'INTERNAL', valid only for test system
 
-        billing_address: {
+      billing_address: {
            address1: '123 Test Street',
            city:     'Test',
            state:    'TE',
            zip:      'AB12CD',
            country:  'GB',
          },
-         shipping_address: {
+      shipping_address: {
            name:     'Muton DeMicelis',
            address1: 'My Street On Upiter, Apt 3.14/2.78',
            city:     'Munich',
@@ -36,7 +36,7 @@ class RemoteOppTest < Test::Unit::TestCase
            zip:      '81675',
            country:  'DE',
          },
-         customer: {
+      customer: {
            merchant_customer_id:  'your merchant/customer id',
            givenName:  'Jane',
            surname:  'Jones',

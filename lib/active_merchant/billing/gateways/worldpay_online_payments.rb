@@ -107,9 +107,9 @@ module ActiveMerchant #:nodoc:
           'state'=>options[:billing_address]&&options[:billing_address][:state] ? options[:billing_address][:state] : '',
           'countryCode'=>options[:billing_address]&&options[:billing_address][:country] ? options[:billing_address][:country] : ''
           },
-          'customerOrderCode' => options[:order_id],
-          'orderType' => 'ECOM',
-          'authorizeOnly' => options[:authorizeOnly] ? true : false
+        'customerOrderCode' => options[:order_id],
+        'orderType' => 'ECOM',
+        'authorizeOnly' => options[:authorizeOnly] ? true : false
         }
       end
 
